@@ -19,34 +19,36 @@ public class PersonaService implements IPersonaService {
 	@Override
 	public List<Persona> getAllPacientes() {
 		return personaDAO.getAllPacientes();
-	}/*
-	@Override
-	public List<Persona> getAllPacientes2() {
-		return personaDAO.getAllPacientes2();
-	}*/
+	}
 	
 	@Override
 	public Persona getPersonaById(int personaId) {
-		// TODO Auto-generated method stub
-		return null;
+		Persona obj = personaDAO.getPersonaById(personaId);
+		if(obj.getTipoPersona().equals("MEDICO")) {
+			return obj;	
+		}
+			return null;
 	}
+
 
 	@Override
-	public void addPersona(Persona persona) {
-		// TODO Auto-generated method stub
-
+	public synchronized boolean addPersona(Persona persona){
+       if (personaDAO.personaExists(persona.getNombre(), persona.getTipoPersona())) {
+    	   return false;
+       } else {
+    	   personaDAO.addPersona(persona);
+    	   return true;
+       }
 	}
-
+	
 	@Override
 	public void updatePersona(Persona persona) {
-		// TODO Auto-generated method stub
-
+		personaDAO.updatePersona(persona);
 	}
 
 	@Override
 	public void deletePersona(int personaId) {
-		// TODO Auto-generated method stub
-
+		personaDAO.deletePersona(personaId);
 	}
-
+	
 }
